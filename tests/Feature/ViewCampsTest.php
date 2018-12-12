@@ -17,56 +17,76 @@ class ViewCampsTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory('App\User')->create();
-        $this->camp = factory('App\Camp')->create(['user_id' => $this->user->id]);
+        $this->user = create('App\User');
+        $this->camp = create('App\Camp', ['user_id' => $this->user->id]);
     }
 
     /** @test */
     public function an_authenticated_user_can_view_all_their_camps()
     {
-        $this->be($this->user);
+//        $this->be($this->user);
+        $this->signIn($this->user);
 
-        $response = $this->get('/camps');
-
-        $response->assertSee($this->camp->name);
-    }
-
-    /** @test */
-    public function an_authenticated_user_can_view_a_camp()
-    {
-        $this->be($this->user);
-
-        $response = $this->get('/camps/' . $this->camp->id);
-
-        $response->assertSee($this->camp->name);
-    }
-
-    /** @test */
-    public function an_authenticated_user_can_see_campers_that_are_associated_with_a_camp()
-    {
-        $this->be($this->user);
-
-        $camper = factory('App\Camper')->create(['camp_id' => $this->camp->id]);
-
-        $response = $this->get('/camps/' . $this->camp->id);
-
-        $response->assertSee($camper->name);
+        $this->get('/camps')
+            ->assertSee($this->camp->name);
     }
 
     /** @test */
     public function unauthenticated_users_may_not_view_camps()
     {
-        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $this->withExceptionHandling();
 
-        $this->get('/camps');
+        $this->get('/camps')
+            ->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_view_a_camp()
+    {
+        $this->signIn($this->user);
+
+        $this->get('/camps/' . $this->camp->id)
+            ->assertSee($this->camp->name);
     }
 
     /** @test */
     public function unauthenticated_users_may_not_view_a_camp()
     {
-        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $this->withExceptionHandling();
 
-        $this->get('/camps/' . $this->camp->id);
+        $this->get('/camps/' . $this->camp->id)
+            ->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function an_authenticated_user_can_see_campers_that_are_associated_with_a_camp()
+    {
+        $this->signIn($this->user);
+
+        $camper = create('App\Camper', ['camp_id' => $this->camp->id]);
+
+        $this->get('/camps/' . $this->camp->id)
+            ->assertSee($camper->name);
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_not_view_other_users_camps()
+    {
+        $this->signIn();
+
+        $this->get('/camps')
+            ->assertDontSee($this->camp->name);
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_not_view_another_users_camp()
+    {
+        $this->withExceptionHandling();
+
+        $this->signIn();
+
+        $this->get('/camps/' . $this->camp->id)
+            ->assertStatus(403);
     }
 
 }

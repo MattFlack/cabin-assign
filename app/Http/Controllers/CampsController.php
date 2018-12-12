@@ -19,7 +19,7 @@ class CampsController extends Controller
      */
     public function index()
     {
-        $camps = Camp::latest()->get();
+        $camps = Camp::where('user_id', auth()->id())->get();
 
         return view('camps.index', compact('camps'));
     }
@@ -42,13 +42,13 @@ class CampsController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = request()->validate([
+        $data = $request->validate([
             'name' => ['required']
         ]);
 
-        $attributes['user_id'] = auth()->id();
+        $data['user_id'] = auth()->id();
 
-        $camp = Camp::create($attributes);
+        $camp = Camp::create($data);
 
         return redirect('/camps/' . $camp->id);
     }
@@ -61,6 +61,8 @@ class CampsController extends Controller
      */
     public function show(Camp $camp)
     {
+        $this->authorize('update', $camp);
+
         return view('camps.show', compact('camp'));
     }
 
@@ -84,7 +86,15 @@ class CampsController extends Controller
      */
     public function update(Request $request, Camp $camp)
     {
-        //
+        $this->authorize('update', $camp);
+
+        $data = $request->validate([
+            'name' => ['required']
+        ]);
+
+        $camp->update($data);
+
+        return $camp;
     }
 
     /**

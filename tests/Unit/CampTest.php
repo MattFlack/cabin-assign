@@ -14,9 +14,9 @@ class CampTest extends TestCase
     /** @test */
     public function a_camp_can_have_campers()
     {
-        $camp = factory('App\Camp')->create();
+        $camp = create('App\Camp');
 
-        factory('App\Camper')->create(['camp_id' => $camp->id]);
+        create('App\Camper', ['camp_id' => $camp->id]);
 
         $this->assertInstanceOf('App\Camper', $camp->campers[0]);
     }
