@@ -19,7 +19,7 @@ class CampsController extends Controller
      */
     public function index()
     {
-        $camps = Camp::latest()->get();
+        $camps = Camp::where('user_id', auth()->id())->get();
 
         return view('camps.index', compact('camps'));
     }
@@ -61,6 +61,8 @@ class CampsController extends Controller
      */
     public function show(Camp $camp)
     {
+        $this->authorize('update', $camp);
+
         return view('camps.show', compact('camp'));
     }
 

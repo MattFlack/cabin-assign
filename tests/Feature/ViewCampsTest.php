@@ -26,9 +26,8 @@ class ViewCampsTest extends TestCase
     {
         $this->be($this->user);
 
-        $response = $this->get('/camps');
-
-        $response->assertSee($this->camp->name);
+        $this->get('/camps')
+            ->assertSee($this->camp->name);
     }
 
     /** @test */
@@ -36,9 +35,8 @@ class ViewCampsTest extends TestCase
     {
         $this->be($this->user);
 
-        $response = $this->get('/camps/' . $this->camp->id);
-
-        $response->assertSee($this->camp->name);
+        $this->get('/camps/' . $this->camp->id)
+            ->assertSee($this->camp->name);
     }
 
     /** @test */
@@ -48,9 +46,8 @@ class ViewCampsTest extends TestCase
 
         $camper = factory('App\Camper')->create(['camp_id' => $this->camp->id]);
 
-        $response = $this->get('/camps/' . $this->camp->id);
-
-        $response->assertSee($camper->name);
+        $this->get('/camps/' . $this->camp->id)
+            ->assertSee($camper->name);
     }
 
     /** @test */
@@ -65,6 +62,27 @@ class ViewCampsTest extends TestCase
     public function unauthenticated_users_may_not_view_a_camp()
     {
         $this->expectException('Illuminate\Auth\AuthenticationException');
+
+        $this->get('/camps/' . $this->camp->id);
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_not_view_other_users_camps()
+    {
+        $anotherUser = factory('App\User')->create();
+        $this->be($anotherUser);
+
+        $this->get('/camps')
+            ->assertDontSee($this->camp->name);
+    }
+
+    /** @test */
+    public function an_authenticated_user_may_not_view_other_users_camp()
+    {
+        $this->expectException('Illuminate\Auth\Access\AuthorizationException');
+
+        $anotherUser = factory('App\User')->create();
+        $this->be($anotherUser);
 
         $this->get('/camps/' . $this->camp->id);
     }
