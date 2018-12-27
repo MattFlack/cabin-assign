@@ -13,18 +13,11 @@ class CreateCampsTest extends TestCase
 
     protected $user;
 
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->user = factory('App\User')->create();
-
-    }
 
     /** @test */
     public function an_authenticated_user_can_visit_the_create_camp_view()
     {
-        $this->be($this->user);
+        $this->signIn();
 
         $this->get('/camps/create')
             ->assertSee('Add Camp');
@@ -33,17 +26,18 @@ class CreateCampsTest extends TestCase
     /** @test */
     public function unauthenticated_users_may_not_visit_the_create_camp_view()
     {
-        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $this->withExceptionHandling();
 
-        $this->get('/camps/create');
+        $this->get('/camps/create')
+            ->assertRedirect('/login');
     }
 
     /** @test */
     public function an_authenticated_user_can_add_a_new_camp()
     {
-        $this->be($this->user);
+        $this->signIn();
 
-        $camp = factory('App\Camp')->make();
+        $camp = make('App\Camp');
         $this->post('/camps', $camp->toArray());
 
         $this->get($camp->path())
@@ -53,8 +47,61 @@ class CreateCampsTest extends TestCase
     /** @test */
     public function unauthenticated_users_may_not_add_new_camps()
     {
-        $this->expectException('Illuminate\Auth\AuthenticationException');
+        $this->withExceptionHandling();
 
-        $this->post('/camps', []);
+        $this->post('/camps', [])
+            ->assertRedirect('/login');
     }
+
+    /** @test */
+    public function an_authenticated_user_can_visit_the_add_campers_view()
+    {
+        $this->signIn();
+
+        $camp = create('App\Camp', ['user_id' => auth()->id()]);
+
+        $this->get($camp->path(). '/campers/create')
+            ->assertSee('Add Campers');
+    }
+
+    /** @test */
+    public function unauthenticated_user_may_not_visit_add_campers_view()
+    {
+        $this->withExceptionHandling();
+
+        $camp = create('App\Camp');
+
+        $this->get($camp->path(). '/campers/create')
+            ->assertRedirect('/login');
+    }
+
+
+    /** @test */
+    public function an_authenticated_user_can_add_a_camper_to_a_camp()
+    {
+        $this->signIn();
+
+        $camp = create('App\Camp', ['user_id' => auth()->id()]);
+
+        $camper = make('App\Camper', ['camp_id' => $camp->id]);
+
+        $this->post($camp->path().'/campers', $camper->toArray());
+
+        $this->get($camp->path(). '/campers/create')
+            ->assertSee($camper->name);
+    }
+
+
+    /** @test */
+    public function unauthenticated_users_may_not_add_a_camper_to_a_camp()
+    {
+        $this->withExceptionHandling();
+
+        $camp = create('App\Camp');
+
+        $this->post($camp->path().'/campers', [])
+            ->assertRedirect('/login');
+    }
+
+
 }

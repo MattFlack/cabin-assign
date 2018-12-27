@@ -54,3 +54,12 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+
+// Global event bus
+window.events = new Vue();
+
+// Global flash helper
+window.flash = function (message) {
+    window.events.$emit('flash', message);
+};

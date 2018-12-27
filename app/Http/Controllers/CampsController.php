@@ -42,15 +42,16 @@ class CampsController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = request()->validate([
+        $data = $request->validate([
             'name' => ['required']
         ]);
 
-        $attributes['user_id'] = auth()->id();
+        $data['user_id'] = auth()->id();
 
-        $camp = Camp::create($attributes);
+        $camp = Camp::create($data);
 
-        return redirect('/camps/' . $camp->id);
+        return redirect('/camps/' . $camp->id)
+            ->with('flash', 'New camp added!');
     }
 
     /**
@@ -86,7 +87,15 @@ class CampsController extends Controller
      */
     public function update(Request $request, Camp $camp)
     {
-        //
+        $this->authorize('update', $camp);
+
+        $data = $request->validate([
+            'name' => ['required']
+        ]);
+
+        $camp->update($data);
+
+        return $camp;
     }
 
     /**
