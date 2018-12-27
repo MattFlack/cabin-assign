@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Camper;
+use App\Camp;
 use Illuminate\Http\Request;
 
 class CampersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,9 +28,11 @@ class CampersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Camp $camp)
     {
-        //
+        $this->authorize('update', $camp);
+
+        return view('campers.create', compact('camp'));
     }
 
     /**
@@ -33,9 +41,20 @@ class CampersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Camp $camp)
     {
-        //
+        $this->authorize('update', $camp);
+
+        $data = $request->validate([
+            'name' => ['required']
+        ]);
+
+        $data['camp_id'] = $camp->id;
+
+        Camper::create($data);
+
+        return back()
+            ->with('flash', 'New camper added!');
     }
 
     /**

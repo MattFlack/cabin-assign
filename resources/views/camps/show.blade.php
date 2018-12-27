@@ -6,8 +6,18 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        {{ $camp->name }}
-                        <button class="btn btn-link btn-sm float-right">Edit</button>
+
+                        <div class="d-flex bd-highlight">
+                            <div class="flex-grow-1 bd-highlight">
+                                {{ $camp->name }}
+                            </div>
+
+                            <div class="bd-highlight">
+                                <a href="{{ $camp->path() }}/campers/create" class="btn btn-link btn-sm">Add Camper</a>
+                                <button class="btn btn-link btn-sm">Edit</button>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="panel-body">
