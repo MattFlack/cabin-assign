@@ -7,14 +7,18 @@
                 <div class="card">
                     <div class="card-header">
 
-                        <div class="d-flex bd-highlight">
+                        <div class="d-flex bd-highlight align-items-center">
+
+                            {{-- Left Header --}}
                             <div class="flex-grow-1 bd-highlight">
-                                {{ $camp->name }}
+                                <h2 class="m-0">{{ $camp->name }}</h2>
                             </div>
 
+                            {{-- Right Header --}}
                             <div class="bd-highlight">
-                                <a href="{{ $camp->path() }}/campers/create" class="btn btn-link btn-sm">Add Camper</a>
-                                <button class="btn btn-link btn-sm">Edit</button>
+                                <a href="{{ $camp->path() }}/campers/create" class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-plus"></i>
+                                </a>
                             </div>
                         </div>
 
