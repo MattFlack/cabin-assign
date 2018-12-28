@@ -20,7 +20,7 @@ class CreateCampsTest extends TestCase
         $this->signIn();
 
         $this->get('/camps/create')
-            ->assertSee('Add Camp');
+            ->assertSee('Create a New Camp');
     }
 
     /** @test */

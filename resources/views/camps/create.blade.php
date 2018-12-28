@@ -4,21 +4,23 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h2>Add Camp</h2>
+                <h2>Create a New Camp</h2>
 
                 @include('shared.validation_errors')
 
-                {!! Form::open(['url' => '/camps']) !!}
+                <form method="POST" action="/camps">
+                    @csrf
 
-                    <!-- Camp Name Form Input -->
+                    <!-- Camp.vue Name Form Input -->
                     <div class="form-group">
-                        {{ Form::label('name', 'Camp Name') }}
-                        {{ Form::text('name', null, ['class' => 'form-control']) }}
-                     </div>
+                        <label for="name">Camp Name</label>
+                        <input class="form-control" name="name" type="text" id="name" required :autofocus="'autofocus'">
+                    </div>
 
-                    {{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
+                    <input class="btn btn-primary" type="submit" value="Submit">
 
-                {!! Form::close() !!}
+                </form>
+
             </div>
         </div>
     </div>

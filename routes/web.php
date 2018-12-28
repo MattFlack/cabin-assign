@@ -27,3 +27,5 @@ Route::patch('/camps/{camp}', 'CampsController@update');
 
 Route::get('/camps/{camp}/campers/create', 'CampersController@create');
 Route::post('/camps/{camp}/campers', 'CampersController@store');
+
+Route::get('/camps/{camp}/campers', 'CampersController@index');

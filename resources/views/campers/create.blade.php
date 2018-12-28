@@ -5,6 +5,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+
                 <h2>Add Campers</h2>
 
                 @include('shared.validation_errors')
@@ -26,16 +27,41 @@
         </div>
     </div>
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <ul class="list-group">
-                @foreach($camp->campers as $camper)
-                    <li class="list-group-item">{{ $camper->name }}</li>
-                @endforeach
-                </ul>
+    @if($camp->campers)
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <h3>{{ $camp->name }}</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                @foreach($camp->campers as $camper)
+                                    <li class="list-group-item">{{ $camper->name }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+
+
+
+    {{--<div class="container mt-5">--}}
+        {{--<div class="row justify-content-center">--}}
+            {{--<div class="col-md-8">--}}
+                {{--<ul class="list-group">--}}
+                {{--@foreach($camp->campers as $camper)--}}
+                    {{--<li class="list-group-item">{{ $camper->name }}</li>--}}
+                {{--@endforeach--}}
+                {{--</ul>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+    @endif
 
 @endsection
