@@ -19,4 +19,6 @@ class Camp extends Model
         return '/camps/' . $this->id;
     }
 
+    // TODO: Add camper method?
+
 }

@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+//Route::middleware('auth:api')->get('/camps/{camp}/campers', function (Request $request) {
+//    return $request->user();
+//});
+
+
+Route::get('/camps/{camp}/campers', 'CampersController@index');
+
+//Route::group(['middleware' => 'auth:api'], function() {
+//    Route::get('/camp/{camp}', 'CampersController@index');
+//});

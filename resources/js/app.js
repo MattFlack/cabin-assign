@@ -21,6 +21,8 @@ require('./bootstrap');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
 Vue.component('flash', require('./components/Flash.vue'));
+Vue.component('camp', require('./components/Camp.vue'));
+Vue.component('new-camper', require('./components/NewCamper.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

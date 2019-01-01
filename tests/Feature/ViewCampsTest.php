@@ -64,8 +64,8 @@ class ViewCampsTest extends TestCase
 
         $camper = create('App\Camper', ['camp_id' => $this->camp->id]);
 
-        $this->get('/camps/' . $this->camp->id)
-            ->assertSee($camper->name);
+        $this->get('/camps/' . $this->camp->id .'/campers')
+            ->assertJsonFragment(['name' => $camper->name]);
     }
 
     /** @test */
@@ -86,6 +86,21 @@ class ViewCampsTest extends TestCase
 
         $this->get('/camps/' . $this->camp->id)
             ->assertStatus(403);
+    }
+    
+    /** @test */
+    public function an_authenticated_user_can_request_all_campers_for_a_given_camp()
+    {
+
+        $this->signIn($this->user);
+
+        $camper = create('App\Camper', ['camp_id' => $this->camp->id]);
+
+        $uri = $this->camp->path() . '/campers';
+        $response = $this->getJson($uri)->json();
+
+        $this->assertCount(1, $response['data']);
+        $this->assertEquals($camper->name, $response['data'][0]['name']);
     }
 
 }

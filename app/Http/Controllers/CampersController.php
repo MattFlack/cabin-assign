@@ -13,14 +13,17 @@ class CampersController extends Controller
         $this->middleware('auth');
     }
 
+    // TODO: Move this to a proper API route/controller
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Camp $camp)
     {
-        //
+        $this->authorize('update', $camp);
+
+        return $camp->campers()->paginate(10);
     }
 
     /**
@@ -35,6 +38,7 @@ class CampersController extends Controller
         return view('campers.create', compact('camp'));
     }
 
+    // TODO: Move this to a proper API route/controller
     /**
      * Store a newly created resource in storage.
      *
@@ -43,6 +47,7 @@ class CampersController extends Controller
      */
     public function store(Request $request, Camp $camp)
     {
+
         $this->authorize('update', $camp);
 
         $data = $request->validate([
@@ -51,10 +56,13 @@ class CampersController extends Controller
 
         $data['camp_id'] = $camp->id;
 
-        Camper::create($data);
+        $camper = Camper::create($data);
 
-        return back()
-            ->with('flash', 'New camper added!');
+
+        return $camper;
+
+//        return back()
+//            ->with('flash', 'New camper added!');
     }
 
     /**

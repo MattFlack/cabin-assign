@@ -28,10 +28,10 @@ class UpdateCampsTest extends TestCase
         $this->signIn($this->user);
 
         $this->patch($this->camp->path(), [
-            'name' => 'Updated Camp Name',
+            'name' => 'Updated Camp.vue Name',
         ]);
 
-        $this->assertEquals('Updated Camp Name', $this->camp->fresh()->name);
+        $this->assertEquals('Updated Camp.vue Name', $this->camp->fresh()->name);
     }
 
     /** @test */
@@ -42,7 +42,7 @@ class UpdateCampsTest extends TestCase
         $this->signIn();
 
         $this->patch($this->camp->path(), [
-            'name' => 'Updated Camp Name',
+            'name' => 'Updated Camp.vue Name',
         ]) ->assertStatus(403);
     }
 

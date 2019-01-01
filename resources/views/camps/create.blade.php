@@ -11,7 +11,7 @@
                 <form method="POST" action="/camps">
                     @csrf
 
-                    <!-- Camp Name Form Input -->
+                    <!-- Camp.vue Name Form Input -->
                     <div class="form-group">
                         <label for="name">Camp Name</label>
                         <input class="form-control" name="name" type="text" id="name" required :autofocus="'autofocus'">
