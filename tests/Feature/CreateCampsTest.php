@@ -53,27 +53,6 @@ class CreateCampsTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    /** @test */
-    public function an_authenticated_user_can_visit_the_add_campers_view()
-    {
-        $this->signIn();
-
-        $camp = create('App\Camp', ['user_id' => auth()->id()]);
-
-        $this->get($camp->path(). '/campers/create')
-            ->assertSee('Add Campers');
-    }
-
-    /** @test */
-    public function unauthenticated_user_may_not_visit_add_campers_view()
-    {
-        $this->withExceptionHandling();
-
-        $camp = create('App\Camp');
-
-        $this->get($camp->path(). '/campers/create')
-            ->assertRedirect('/login');
-    }
 
 
     /** @test */
@@ -87,8 +66,8 @@ class CreateCampsTest extends TestCase
 
         $this->post($camp->path().'/campers', $camper->toArray());
 
-        $this->get($camp->path(). '/campers/create')
-            ->assertSee($camper->name);
+        $this->get($camp->path(). '/campers')
+            ->assertJsonFragment([ 'name' => $camper->name]);
     }
 
 

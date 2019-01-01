@@ -24,6 +24,7 @@ yarn-error.log
 # Generated files
 .idea/**/contentModel.xml
 /public/js
+/public/js/app.js
 /public/css
 /public/mix-manifest.json
 

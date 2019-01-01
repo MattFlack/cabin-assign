@@ -91,7 +91,6 @@ class ViewCampsTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_request_all_campers_for_a_given_camp()
     {
-
         $this->signIn($this->user);
 
         $camper = create('App\Camper', ['camp_id' => $this->camp->id]);

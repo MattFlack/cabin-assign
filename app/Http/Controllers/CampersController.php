@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Camper;
 use App\Camp;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CampersController extends Controller
 {
@@ -23,7 +24,7 @@ class CampersController extends Controller
     {
         $this->authorize('update', $camp);
 
-        return $camp->campers()->paginate(10);
+        return response($camp->campers()->paginate(10), Response::HTTP_OK);
     }
 
     /**
@@ -33,9 +34,7 @@ class CampersController extends Controller
      */
     public function create(Camp $camp)
     {
-        $this->authorize('update', $camp);
-
-        return view('campers.create', compact('camp'));
+        //
     }
 
     // TODO: Move this to a proper API route/controller
@@ -47,7 +46,6 @@ class CampersController extends Controller
      */
     public function store(Request $request, Camp $camp)
     {
-
         $this->authorize('update', $camp);
 
         $data = $request->validate([
@@ -58,11 +56,7 @@ class CampersController extends Controller
 
         $camper = Camper::create($data);
 
-
         return $camper;
-
-//        return back()
-//            ->with('flash', 'New camper added!');
     }
 
     /**
