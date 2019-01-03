@@ -37,9 +37,9 @@ class CamperTest extends TestCase
     /** @test */
     public function a_camper_has_friends()
     {
-        $friend = create('App\Friend', ['camper_id' => $this->camper->id]);
+        $friend = create('App\Friendship', ['camper_id' => $this->camper->id]);
 
-        $this->assertInstanceOf('App\Friend', $this->camper->friends[0]);
+        $this->assertInstanceOf('App\Friendship', $this->camper->friends[0]);
         $this->assertEquals($friend->friend_id, $this->camper->friends[0]->friend_id);
         $this->assertEquals($friend->camper_id, $this->camper->friends[0]->camper_id);
     }

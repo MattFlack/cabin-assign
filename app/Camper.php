@@ -15,7 +15,7 @@ class Camper extends Model
 
     public function friends()
     {
-        return $this->hasMany(Friend::class);
+        return $this->hasMany(Friendship::class);
     }
 
     public function path()

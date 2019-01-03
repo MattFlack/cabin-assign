@@ -30,7 +30,7 @@ class CampersTableSeeder extends Seeder
             $friendIds = $campers->whereNotIn('id', $camper->id)->random(DatabaseSeeder::NUM_FRIENDS_PER_CAMPER)->map->id;
 
             foreach ($friendIds as $friend) {
-                DB::table('friends')->insert([
+                DB::table('friendships')->insert([
                     'camper_id' => $camper->id,
                     'friend_id' => $friend,
                 ]);

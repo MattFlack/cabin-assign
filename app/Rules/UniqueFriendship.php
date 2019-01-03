@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use App\Camp;
-use App\Friend;
+use App\Friendship;
 
 class UniqueFriendship implements Rule
 {
@@ -29,7 +29,7 @@ class UniqueFriendship implements Rule
      */
     public function passes($attribute, $value)
     {
-        $matches = Friend::where('camper_id', $this->camperId)
+        $matches = Friendship::where('camper_id', $this->camperId)
             ->where('friend_id', $value)
             ->count();
 

@@ -59,7 +59,7 @@ class AddFriendsTest extends TestCase
     {
         $this->signIn($this->user);
 
-        $friend = make('App\Friend',
+        $friend = make('App\Friendship',
             [
                 'camper_id' => $this->camper->id,
                 'friend_id' => $this->anotherCamper->id
@@ -73,7 +73,7 @@ class AddFriendsTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_users_may_not_specify_a_friend()
+    public function unauthenticated_users_may_not_specify_a_friendship()
     {
         $this->withExceptionHandling();
 
@@ -88,7 +88,7 @@ class AddFriendsTest extends TestCase
 
         $this->signIn($this->user);
 
-        $friend = create('App\Friend',
+        $friend = create('App\Friendship',
             [
                 'camper_id' => $this->camper->id,
                 'friend_id' => $this->anotherCamper->id

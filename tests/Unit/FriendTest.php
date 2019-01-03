@@ -16,7 +16,7 @@ class FriendTest extends TestCase
         $camper = create('App\Camper', ['camp_id' => $camp->id]);
         $friendOfCamper = create('App\Camper', ['camp_id' => $camp->id]);
 
-        $friendship = create('App\Friend',
+        $friendship = create('App\Friendship',
             [
                 'camper_id' => $camper->id,
                 'friend_id' => $friendOfCamper->id

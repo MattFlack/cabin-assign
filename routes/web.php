@@ -31,4 +31,4 @@ Route::post('/camps/{camp}/campers', 'CampersController@store');
 Route::get('/camps/{camp}/campers', 'CampersController@index');
 Route::get('/camps/{camp}/campers/{camper}', 'CampersController@show');
 
-Route::post('/camps/{camp}/campers/{camper}', 'FriendsController@store');
+Route::post('/camps/{camp}/campers/{camper}', 'FriendshipsController@store');

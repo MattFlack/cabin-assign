@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Friend;
+use App\Friendship;
 use App\Rules\UniqueFriendship;
 use Illuminate\Http\Request;
 
-class FriendsController extends Controller
+class FriendshipsController extends Controller
 {
     public function __construct()
     {
@@ -46,7 +46,7 @@ class FriendsController extends Controller
             'friend_id' => ['required', new UniqueFriendship($request->camper_id)],
         ]);
 
-        Friend::create($data);
+        Friendship::create($data);
 
         return back()
             ->with('flash', 'New friend added!');
@@ -55,10 +55,10 @@ class FriendsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Friend  $friend
+     * @param  \App\Friendship  $friend
      * @return \Illuminate\Http\Response
      */
-    public function show(Friend $friend)
+    public function show(Friendship $friend)
     {
         //
     }
@@ -66,10 +66,10 @@ class FriendsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Friend  $friend
+     * @param  \App\Friendship  $friend
      * @return \Illuminate\Http\Response
      */
-    public function edit(Friend $friend)
+    public function edit(Friendship $friend)
     {
         //
     }
@@ -78,10 +78,10 @@ class FriendsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Friend  $friend
+     * @param  \App\Friendship  $friend
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Friend $friend)
+    public function update(Request $request, Friendship $friend)
     {
         //
     }
@@ -89,10 +89,10 @@ class FriendsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Friend  $friend
+     * @param  \App\Friendship  $friend
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Friend $friend)
+    public function destroy(Friendship $friend)
     {
         //
     }
