@@ -33,9 +33,11 @@ class CreateCampsTest extends TestCase
     public function an_authenticated_user_can_add_a_new_camp()
     {
         $this->signIn();
+        $camp = make('App\Camp', ['user_id' => auth()->id()]);
 
-        $camp = make('App\Camp');
         $this->post('/camps', $camp->toArray());
+
+        $this->assertDatabaseHas('camps', $camp->toArray());
 
         $this->get($camp->path())
             ->assertSee($camp->name);
@@ -50,23 +52,20 @@ class CreateCampsTest extends TestCase
             ->assertRedirect('/login');
     }
 
-
-
     /** @test */
     public function an_authenticated_user_can_add_a_camper_to_a_camp()
     {
         $this->signIn();
-
         $camp = create('App\Camp', ['user_id' => auth()->id()]);
-
         $camper = make('App\Camper', ['camp_id' => $camp->id]);
 
         $this->post($camp->path().'/campers', $camper->toArray());
 
+        $this->assertDatabaseHas('campers', $camper->toArray());
+
         $this->get($camp->path(). '/campers')
             ->assertJsonFragment([ 'name' => $camper->name]);
     }
-
 
     /** @test */
     public function unauthenticated_users_may_not_add_a_camper_to_a_camp()
@@ -78,6 +77,5 @@ class CreateCampsTest extends TestCase
         $this->post($camp->path().'/campers', [])
             ->assertRedirect('/login');
     }
-
 
 }

@@ -59,13 +59,15 @@ class AddFriendsTest extends TestCase
     {
         $this->signIn($this->user);
 
-        $friend = make('App\Friendship',
+        $friendship = make('App\Friendship',
             [
                 'camper_id' => $this->camper->id,
                 'friend_id' => $this->anotherCamper->id
             ]);
 
-        $this->post($this->camper->path(), $friend->toArray());
+        $this->post($this->camper->path(), $friendship->toArray());
+
+        $this->assertDatabaseHas('friendships', $friendship->toArray());
 
         $this->get($this->camper->path())
             ->assertSee('New friend added')
