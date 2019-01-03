@@ -11,9 +11,6 @@ class CreateCampsTest extends TestCase
 {
     use DatabaseMigrations;
 
-    protected $user;
-
-
     /** @test */
     public function an_authenticated_user_can_visit_the_create_camp_view()
     {

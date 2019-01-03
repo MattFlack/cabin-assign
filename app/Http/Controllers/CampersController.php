@@ -65,9 +65,11 @@ class CampersController extends Controller
      * @param  \App\Camper  $camper
      * @return \Illuminate\Http\Response
      */
-    public function show(Camper $camper)
+    public function show(Camp $camp, Camper $camper)
     {
-        //
+        $this->authorize('update', $camp);
+
+        return view('campers.show', compact('camper'));
     }
 
     /**

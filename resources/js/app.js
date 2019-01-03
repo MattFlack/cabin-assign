@@ -23,6 +23,7 @@ require('./bootstrap');
 Vue.component('flash', require('./components/Flash.vue'));
 Vue.component('camp', require('./components/Camp.vue'));
 Vue.component('new-camper', require('./components/NewCamper.vue'));
+Vue.component('add-friend-form', require('./components/AddFriendForm.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

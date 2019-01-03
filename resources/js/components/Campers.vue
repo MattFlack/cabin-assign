@@ -1,7 +1,7 @@
 <template>
     <div>
         <transition name="slide-fade">
-            <NewCamper @created="add" :campId="this.campId" v-show="showNewCamper"></NewCamper>
+            <new-camper @created="add" :campId="this.campId" v-show="showNewCamper"></new-camper>
         </transition>
 
         <div class="container">
@@ -30,10 +30,11 @@
                         <div class="panel-body">
                             <article>
 
-
                                 <ul class="list-group">
                                     <li v-for="camper in this.campers" class="list-group-item">
-                                        {{ camper.name }}
+                                        <a :href="campersUrl + '/' + camper.id">
+                                            {{ camper.name }}
+                                        </a>
                                     </li>
                                 </ul>
 
@@ -63,9 +64,9 @@
         },
 
         computed: {
-            url() {
+            campersUrl() {
                 return '/camps/' + this.campId + '/campers'
-            }
+            },
         },
 
         created() {
@@ -74,7 +75,7 @@
 
         methods: {
             fetch() {
-                axios.get(this.url)
+                axios.get(this.campersUrl)
                     .then(this.refresh);
             },
 

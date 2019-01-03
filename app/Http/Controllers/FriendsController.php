@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Friend;
+use App\Rules\UniqueFriendship;
 use Illuminate\Http\Request;
 
 class FriendsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +41,15 @@ class FriendsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'camper_id' => ['required'],
+            'friend_id' => ['required', new UniqueFriendship($request->camper_id)],
+        ]);
+
+        Friend::create($data);
+
+        return back()
+            ->with('flash', 'New friend added!');
     }
 
     /**
