@@ -40,7 +40,7 @@ class CreateCampsTest extends TestCase
         $this->assertDatabaseHas('camps', $camp->toArray());
 
         $this->get($camp->path())
-            ->assertSee($camp->name);
+            ->assertSee(e($camp->name));
     }
 
     /** @test */

@@ -106,6 +106,19 @@ class CampsController extends Controller
      */
     public function destroy(Camp $camp)
     {
-        //
+        $this->authorize('update', $camp);
+
+        foreach ($camp->campers as $camper) {
+            $camper->friends()->delete();
+        }
+
+        $camp->campers()->delete();
+        $camp->delete();
+
+        if(request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect('/camps');
     }
 }

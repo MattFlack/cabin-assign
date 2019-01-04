@@ -20,17 +20,31 @@
                         </div>
                     </div>
 
-                    <div class="panel-body">
-                        <ul class="list-group">
-                        @foreach($camps as $camp)
-                            <li class="list-group-item">
+                    {{-- Camp List --}}
+                    <ul class="list-group list-group-flush">
+                    @foreach($camps as $camp)
+                        <li class="list-group-item d-flex bd-highlight align-items-center">
+
+                            {{-- Left Content --}}
+                            <div class="flex-grow-1 bd-highlight">
                                 <a href="{{ $camp->path() }}">
                                     {{ $camp->name }}
                                 </a>
-                            </li>
-                        @endforeach
-                        </ul>
-                    </div>
+                            </div>
+
+                            {{-- Right Content --}}
+                            <div class="bd-highlight">
+                                <form action="{{ $camp->path() }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit" class="btn btn-link">Delete</button>
+                                </form>
+                            </div>
+                        </li>
+                    @endforeach
+                    </ul>
+
 
                 </div>
             </div>
