@@ -7,9 +7,20 @@
             <div class="col-md-8">
 
                 <div class="card mb-5">
+
                     <div class="card-header">
-                        <h2>{{ $camper->name }}</h2>
-                        <span class="badge badge-secondary">Friends: {{ $camper->friends->count() }}</span>
+                        <div class="d-flex bd-highlight align-items-center">
+
+                            {{-- Left Header --}}
+                            <div class="flex-grow-1 bd-highlight">
+                                <h2>{{ $camper->name }}</h2>
+                            </div>
+
+                            {{-- Right Header --}}
+                            <div class="bd-highlight">
+                                <span class="badge badge-secondary">Friends: {{ $camper->friends->count() }}</span>
+                            </div>
+                        </div>
                     </div>
 
                     <ul class="list-group list-group-flush">
@@ -30,3 +41,4 @@
     </div>
 
 @endsection
+

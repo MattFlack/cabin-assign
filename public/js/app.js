@@ -48568,6 +48568,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -48605,8 +48614,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.dataSet = data;
             this.campers = data.data;
         },
+        deleteCamper: function deleteCamper(camper, index) {
+            axios.delete(this.campersUrl + '/' + camper.id);
+            this.remove(index);
+            console.log("camper deleted at index " + index);
+            console.log(camper);
+        },
         add: function add(camper) {
             this.campers.push(camper);
+        },
+        remove: function remove(index) {
+            this.campers.splice(index, 1);
         }
     }
 
@@ -48818,30 +48836,52 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "panel-body" }, [
-                _c("article", [
-                  _c(
-                    "ul",
-                    { staticClass: "list-group" },
-                    _vm._l(this.campers, function(camper) {
-                      return _c("li", { staticClass: "list-group-item" }, [
+              _c(
+                "ul",
+                { staticClass: "list-group list-group-flush" },
+                _vm._l(this.campers, function(camper, index) {
+                  return _c(
+                    "li",
+                    {
+                      key: camper.id,
+                      staticClass:
+                        "list-group-item d-flex bd-highlight align-items-center"
+                    },
+                    [
+                      _c("div", { staticClass: "flex-grow-1 bd-highlight" }, [
                         _c(
                           "a",
                           { attrs: { href: _vm.campersUrl + "/" + camper.id } },
                           [
                             _vm._v(
-                              "\n                                        " +
+                              "\n                                    " +
                                 _vm._s(camper.name) +
-                                "\n                                    "
+                                "\n                                "
                             )
                           ]
                         )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "bd-highlight" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-link",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                _vm.deleteCamper(camper, index)
+                              }
+                            }
+                          },
+                          [_vm._v("Delete")]
+                        )
                       ])
-                    }),
-                    0
+                    ]
                   )
-                ])
-              ])
+                }),
+                0
+              )
             ])
           ])
         ])

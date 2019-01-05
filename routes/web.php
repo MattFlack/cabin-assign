@@ -30,5 +30,6 @@ Route::get('/camps/{camp}/campers/create', 'CampersController@create');
 Route::post('/camps/{camp}/campers', 'CampersController@store');
 Route::get('/camps/{camp}/campers', 'CampersController@index');
 Route::get('/camps/{camp}/campers/{camper}', 'CampersController@show');
+Route::delete('/camps/{camp}/campers/{camper}', 'CampersController@destroy');
 
 Route::post('/camps/{camp}/campers/{camper}', 'FriendshipsController@store');

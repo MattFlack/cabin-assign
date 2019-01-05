@@ -101,8 +101,16 @@ class CampersController extends Controller
      * @param  \App\Camper  $camper
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Camper $camper)
+    public function destroy(Camp $camp, Camper $camper)
     {
-        //
+        $this->authorize('update', $camp);
+
+        $camper->delete();
+
+        if(request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect($camp->path());
     }
 }

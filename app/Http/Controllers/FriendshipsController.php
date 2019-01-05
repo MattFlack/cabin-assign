@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Camp;
+use App\Camper;
 use App\Friendship;
 use App\Rules\UniqueFriendship;
 use Illuminate\Http\Request;
@@ -39,12 +41,14 @@ class FriendshipsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Camp $camp, Camper $camper, Request $request)
     {
         $data = $request->validate([
-            'camper_id' => ['required'],
-            'friend_id' => ['required', new UniqueFriendship($request->camper_id)],
+            'friend_id' => ['required', new UniqueFriendship($camper->id)],
         ]);
+
+        $data['camp_id'] = $camp->id;
+        $data['camper_id'] = $camper->id;
 
         Friendship::create($data);
 

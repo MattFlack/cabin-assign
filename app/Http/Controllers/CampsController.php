@@ -108,11 +108,6 @@ class CampsController extends Controller
     {
         $this->authorize('update', $camp);
 
-        foreach ($camp->campers as $camper) {
-            $camper->friends()->delete();
-        }
-
-        $camp->campers()->delete();
         $camp->delete();
 
         if(request()->wantsJson()) {

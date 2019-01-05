@@ -27,19 +27,28 @@
 
                         </div>
 
-                        <div class="panel-body">
-                            <article>
 
-                                <ul class="list-group">
-                                    <li v-for="camper in this.campers" class="list-group-item">
-                                        <a :href="campersUrl + '/' + camper.id">
-                                            {{ camper.name }}
-                                        </a>
-                                    </li>
-                                </ul>
 
-                            </article>
-                        </div>
+
+                        <ul class="list-group list-group-flush">
+                            <li v-for="(camper, index) in this.campers" :key="camper.id" class="list-group-item d-flex bd-highlight align-items-center">
+
+                                <!-- Left Content -->
+                                <div class="flex-grow-1 bd-highlight">
+                                    <a :href="campersUrl + '/' + camper.id">
+                                        {{ camper.name }}
+                                    </a>
+                                </div>
+
+                                <!-- Right Content -->
+                                <div class="bd-highlight">
+                                    <button type="button" class="btn btn-link" @click="deleteCamper(camper, index)">Delete</button>
+                                </div>
+                            </li>
+                        </ul>
+
+
+
 
                     </div>
                 </div>
@@ -84,9 +93,20 @@
                 this.campers = data.data;
             },
 
+            deleteCamper(camper, index) {
+                axios.delete(this.campersUrl + '/' + camper.id);
+                this.remove(index);
+                console.log("camper deleted at index " + index);
+                console.log(camper);
+            },
+
             add(camper) {
                 this.campers.push(camper);
             },
+
+            remove(index) {
+                this.campers.splice(index, 1);
+            }
         },
 
     }

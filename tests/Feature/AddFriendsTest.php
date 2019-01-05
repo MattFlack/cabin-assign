@@ -59,11 +59,11 @@ class AddFriendsTest extends TestCase
     {
         $this->signIn($this->user);
 
-        $friendship = make('App\Friendship',
-            [
-                'camper_id' => $this->camper->id,
-                'friend_id' => $this->anotherCamper->id
-            ]);
+        $friendship = make('App\Friendship', [
+            'camp_id' => $this->camp->id,
+            'camper_id' => $this->camper->id,
+            'friend_id' => $this->anotherCamper->id
+        ]);
 
         $this->post($this->camper->path(), $friendship->toArray());
 
@@ -92,6 +92,7 @@ class AddFriendsTest extends TestCase
 
         $friend = create('App\Friendship',
             [
+                'camp_id' => $this->camp->id,
                 'camper_id' => $this->camper->id,
                 'friend_id' => $this->anotherCamper->id
             ]);

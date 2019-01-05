@@ -31,6 +31,7 @@ class CampersTableSeeder extends Seeder
 
             foreach ($friendIds as $friend) {
                 DB::table('friendships')->insert([
+                    'camp_id' => $campId,
                     'camper_id' => $camper->id,
                     'friend_id' => $friend,
                 ]);
