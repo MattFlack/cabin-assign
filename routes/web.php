@@ -33,3 +33,4 @@ Route::get('/camps/{camp}/campers/{camper}', 'CampersController@show');
 Route::delete('/camps/{camp}/campers/{camper}', 'CampersController@destroy');
 
 Route::post('/camps/{camp}/campers/{camper}', 'FriendshipsController@store');
+Route::delete('/camps/{camp}/campers/{camper}/friendships/{friendship}', 'FriendshipsController@destroy');

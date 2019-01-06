@@ -17,4 +17,9 @@ class Friendship extends Model
     {
         return $this->belongsTo('App\Camper');
     }
+
+    public function path()
+    {
+        return $this->camper->path() . '/friendships/' . $this->id;
+    }
 }

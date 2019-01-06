@@ -41,4 +41,13 @@ class FriendshipTest extends TestCase
     {
         $this->assertEquals($this->friendOfCamper->name, $this->friendship->friendOfCamper->name);
     }
+
+    /** @test */
+    public function a_friendship_has_a_path()
+    {
+        $this->assertEquals(
+            $this->camper->path() . '/friendships/' . $this->friendship->id,
+            $this->friendship->path()
+        );
+    }
 }

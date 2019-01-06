@@ -122,8 +122,6 @@ class UpdateCampsTest extends TestCase
             'friend_id' => $this->camper->id,
         ]);
 
-//        dd($this->camp->friendships()->count());
-
         $this->json('DELETE', $this->camper->path());
 
         $this->assertDatabaseMissing('friendships', $this->friendship->toArray());

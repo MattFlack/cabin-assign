@@ -6,7 +6,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <div class="card mb-5">
+                <a href="{{ $camper->camp->path() }}">Back to Camp</a>
+
+                <div class="card mb-5 mt-3">
 
                     <div class="card-header">
                         <div class="d-flex bd-highlight align-items-center">
@@ -25,8 +27,25 @@
 
                     <ul class="list-group list-group-flush">
 
-                        @foreach($camper->friends as $friend)
-                            <li class="list-group-item">{{ $friend->friendOfCamper->name }}</li>
+                        @foreach($camper->friends as $friendship)
+                            <li class="list-group-item d-flex bd-highlight align-items-center">
+
+                                {{-- Left Content --}}
+                                <div class="flex-grow-1 bd-highlight">
+                                    {{ $friendship->friendOfCamper->name }}
+                                </div>
+
+                                {{-- Right Content --}}
+                                <div class="bd-highlight">
+                                    <form action="{{ $friendship->path() }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="btn btn-link">Delete</button>
+                                    </form>
+                                </div>
+
+                            </li>
                         @endforeach
 
                     </ul>

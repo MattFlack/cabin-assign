@@ -93,11 +93,19 @@ class FriendshipsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Friendship  $friend
+     * @param  \App\Friendship  $friendship
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Friendship $friend)
+    public function destroy(Camp $camp, Camper $camper, Friendship $friendship)
     {
-        //
+        $this->authorize('update', $camp);
+
+        $friendship->delete();
+
+        if(request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect($camper->path());
     }
 }
