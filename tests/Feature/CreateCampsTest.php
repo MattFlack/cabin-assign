@@ -78,4 +78,65 @@ class CreateCampsTest extends TestCase
             ->assertRedirect('/login');
     }
 
+    /** @test */
+    public function authorised_users_can_add_cabins_to_a_camp()
+    {
+        $this->signIn();
+        $camp = create('App\Camp', ['user_id' => auth()->id()]);
+        $cabin = make('App\Cabin', ['camp_id' => $camp->id]);
+
+        $this->post($camp->path().'/cabins', $cabin->toArray());
+
+        $this->assertDatabaseHas('cabins', $cabin->toArray());
+    }
+
+    /** @test */
+    public function unauthorised_users_may_not_add_cabins_to_a_camp()
+    {
+        $this->withExceptionHandling();
+
+        $camp = create('App\Camp');
+        $cabin = make('App\Cabin', ['camp_id' => $camp->id]);
+
+        // Not signed in
+        $this->post($camp->path().'/cabins', [])
+            ->assertStatus(403);
+
+        // Not the owner
+        $this->signIn();
+
+        $this->post($camp->path().'/cabins', $cabin->toArray())
+            ->assertStatus(403);
+
+        $this->assertDatabaseMissing('cabins', $cabin->toArray());
+    }
+
+    /** @test */
+    public function authorised_users_can_visit_the_cabins_view()
+    {
+        $this->signIn();
+        $camp = create('App\Camp', ['user_id' => auth()->id()]);
+
+        $this->get($camp->path() . '/cabins')
+            ->assertSee('Add Cabins');
+    }
+
+    /** @test */
+    public function unauthorised_users_may_not_visit_the_cabins_view()
+    {
+        $this->withExceptionHandling();
+
+        $camp = create('App\Camp');
+
+        // Not signed in
+        $this->get($camp->path() . '/cabins')
+            ->assertStatus(403);
+
+        // Not the camp owner
+        $this->signIn();
+
+        $this->get($camp->path() . '/cabins')
+            ->assertStatus(403);
+    }
+
 }

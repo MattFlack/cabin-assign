@@ -48577,6 +48577,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -48821,7 +48826,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-secondary btn-sm",
+                          staticClass: "btn btn-link btn-sm",
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
@@ -48829,7 +48834,29 @@ var render = function() {
                             }
                           }
                         },
-                        [_c("i", { staticClass: "fas fa-plus" })]
+                        [
+                          _vm._v(
+                            "\n                                    Add Camper\n                                "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-link btn-sm",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.showNewCamper = !_vm.showNewCamper
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    Add Cabin\n                                "
+                          )
+                        ]
                       )
                     ])
                   ]
@@ -48874,7 +48901,7 @@ var render = function() {
                               }
                             }
                           },
-                          [_vm._v("Delete")]
+                          [_c("i", { staticClass: "fas fa-trash" })]
                         )
                       ])
                     ]

@@ -19,8 +19,11 @@
 
                                 <!-- Right Header -->
                                 <div class="bd-highlight">
-                                    <button type="button" class="btn btn-secondary btn-sm" @click="showNewCamper = !showNewCamper">
-                                        <i class="fas fa-plus"></i>
+                                    <button type="button" class="btn btn-link btn-sm" @click="showNewCamper = !showNewCamper">
+                                        Add Camper
+                                    </button>
+                                    <button type="button" class="btn btn-link btn-sm" @click="showNewCamper = !showNewCamper">
+                                        Add Cabin
                                     </button>
                                 </div>
                             </div>
@@ -42,7 +45,9 @@
 
                                 <!-- Right Content -->
                                 <div class="bd-highlight">
-                                    <button type="button" class="btn btn-link" @click="deleteCamper(camper, index)">Delete</button>
+                                    <button type="button" class="btn btn-link" @click="deleteCamper(camper, index)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </li>
                         </ul>

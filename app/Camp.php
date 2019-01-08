@@ -19,6 +19,11 @@ class Camp extends Model
         return $this->hasMany(Friendship::class);
     }
 
+    public function cabins()
+    {
+        return $this->hasMany(Cabin::class);
+    }
+
     public function path()
     {
         return '/camps/' . $this->id;

@@ -22,7 +22,7 @@ class ViewCampsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_view_all_their_camps()
+    public function authorised_users_can_view_all_their_camps()
     {
         $this->signIn($this->user);
 
@@ -31,16 +31,23 @@ class ViewCampsTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_users_may_not_view_camps()
+    public function unauthorised_users_may_not_view_camps()
     {
+        // Not signed in
         $this->withExceptionHandling();
 
         $this->get('/camps')
             ->assertRedirect('/login');
+
+        // Not the owner
+        $this->signIn();
+
+        $this->get('/camps')
+            ->assertDontSee($this->camp->name);
     }
 
     /** @test */
-    public function an_authenticated_user_can_view_a_camp()
+    public function authorised_users_can_view_their_camp()
     {
         $this->signIn($this->user);
 
@@ -49,16 +56,23 @@ class ViewCampsTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_users_may_not_view_a_camp()
+    public function unauthorised_users_may_not_view_a_camp()
     {
+        // Not signed in
         $this->withExceptionHandling();
 
         $this->get('/camps/' . $this->camp->id)
             ->assertRedirect('/login');
+
+        // Not the owner
+        $this->signIn();
+
+        $this->get('/camps/' . $this->camp->id)
+            ->assertStatus(403);
     }
 
     /** @test */
-    public function an_authenticated_user_can_see_campers_that_are_associated_with_a_camp()
+    public function authorised_users_can_see_campers_that_are_associated_with_their_camp()
     {
         $this->signIn($this->user);
 
@@ -68,26 +82,6 @@ class ViewCampsTest extends TestCase
             ->assertJsonFragment(['name' => $camper->name]);
     }
 
-    /** @test */
-    public function an_authenticated_user_may_not_view_other_users_camps()
-    {
-        $this->signIn();
-
-        $this->get('/camps')
-            ->assertDontSee($this->camp->name);
-    }
-
-    /** @test */
-    public function an_authenticated_user_may_not_view_another_users_camp()
-    {
-        $this->withExceptionHandling();
-
-        $this->signIn();
-
-        $this->get('/camps/' . $this->camp->id)
-            ->assertStatus(403);
-    }
-    
     /** @test */
     public function an_authenticated_user_can_request_all_campers_for_a_given_camp()
     {

@@ -45,4 +45,12 @@ class CampTest extends TestCase
 
         $this->assertInstanceOf('App\Friendship', $this->camp->friendships[0]);
     }
+
+    /** @test */
+    public function a_camp_can_have_cabins()
+    {
+        $cabin = create('App\Cabin', ['camp_id' => $this->camp->id]);
+
+        $this->assertInstanceOf('App\Cabin', $this->camp->cabins[0]);
+    }
 }
