@@ -116,6 +116,7 @@ class CampersController extends Controller
             return response([], 204);
         }
 
-        return redirect($camp->path());
+        return redirect($camp->path())
+            ->with('flash', 'Camper has been removed!');
     }
 }

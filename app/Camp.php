@@ -35,6 +35,7 @@ class Camp extends Model
 
         static::deleting(function ($camp) {
             $camp->campers->each->delete();
+            $camp->cabins->each->delete();
         });
     }
 

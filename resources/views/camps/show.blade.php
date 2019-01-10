@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <tabs>
 
-                            <tab v-cloak name="Campers" :selected="true">
+                            <tab name="Campers" :selected="true">
                                 @if(count($camp->campers) > 0)
                                     <campers :campers="{{ $camp->campers }}"></campers>
                                 @else

@@ -19,7 +19,7 @@ class CampsController extends Controller
      */
     public function index()
     {
-        $camps = Camp::where('user_id', auth()->id())->paginate(15);
+        $camps = Camp::where('user_id', auth()->id())->paginate(10);
 
         return view('camps.index', compact('camps'));
     }
@@ -114,6 +114,7 @@ class CampsController extends Controller
             return response([], 204);
         }
 
-        return redirect('/camps');
+        return redirect('/camps')
+            ->with('flash', 'Camp has been removed!');
     }
 }

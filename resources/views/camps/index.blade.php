@@ -43,7 +43,9 @@
                                     @csrf
                                     @method('DELETE')
 
-                                    <button type="submit" class="btn btn-link">Delete</button>
+                                    <button type="submit" class="btn btn-link">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </form>
                             </div>
                         </li>

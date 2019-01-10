@@ -48388,10 +48388,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['campers']
+    props: ['campers'],
+
+    data: function data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        };
+    },
+
+
+    methods: {
+        camperLink: function camperLink(camper) {
+            return "/camps/" + camper.camp_id + "/campers/" + camper.id;
+        }
+    }
 });
 
 /***/ }),
@@ -48402,7 +48432,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("table", { staticClass: "table table-hover table-bordered" }, [
+  return _c("table", { staticClass: "table table-hover border" }, [
     _vm._m(0),
     _vm._v(" "),
     _c(
@@ -48410,24 +48440,37 @@ var render = function() {
       _vm._l(this.campers, function(camper) {
         return _c("tr", [
           _c("td", [
-            _c(
-              "a",
-              {
-                attrs: {
-                  href: "/camps/" + camper.camp_id + "/campers/" + camper.id
-                }
-              },
-              [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(camper.name) +
-                    "\n                "
-                )
-              ]
-            )
+            _c("a", { attrs: { href: _vm.camperLink(camper) } }, [
+              _vm._v(
+                "\n                    " +
+                  _vm._s(camper.name) +
+                  "\n                "
+              )
+            ])
           ]),
           _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(camper.friends_count))])
+          _c("td", { staticClass: "text-right" }, [
+            _vm._v(_vm._s(camper.friends_count))
+          ]),
+          _vm._v(" "),
+          _c("td", { staticClass: "text-right" }, [
+            _c(
+              "form",
+              { attrs: { action: _vm.camperLink(camper), method: "POST" } },
+              [
+                _c("input", {
+                  attrs: { type: "hidden", name: "_token" },
+                  domProps: { value: _vm.csrf }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "hidden", name: "_method", value: "DELETE" }
+                }),
+                _vm._v(" "),
+                _vm._m(1, true)
+              ]
+            )
+          ])
         ])
       }),
       0
@@ -48443,9 +48486,23 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Friends")])
+        _c("th", { staticClass: "text-right", attrs: { scope: "col" } }, [
+          _vm._v("Friends")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-right", attrs: { scope: "col" } })
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-link btn-sm", attrs: { type: "submit" } },
+      [_c("i", { staticClass: "fas fa-trash" })]
+    )
   }
 ]
 render._withStripped = true
@@ -48535,10 +48592,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['cabins']
+    props: ['cabins'],
+
+    data: function data() {
+        return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        };
+    },
+
+
+    methods: {
+        cabinLink: function cabinLink(cabin) {
+            return "/camps/" + cabin.camp_id + "/cabins/" + cabin.id;
+        }
+    }
 });
 
 /***/ }),
@@ -48549,7 +48635,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("table", { staticClass: "table table-hover table-bordered" }, [
+  return _c("table", { staticClass: "table table-hover border" }, [
     _vm._m(0),
     _vm._v(" "),
     _c(
@@ -48557,11 +48643,30 @@ var render = function() {
       _vm._l(this.cabins, function(cabin) {
         return _c("tr", [
           _c("td", [
-            _vm._v("\n            " + _vm._s(cabin.name) + "\n            ")
+            _vm._v("\n            " + _vm._s(cabin.name) + "\n        ")
           ]),
           _vm._v(" "),
-          _c("td", [
+          _c("td", { staticClass: "text-right" }, [
             _vm._v("\n            " + _vm._s(cabin.capacity) + "\n        ")
+          ]),
+          _vm._v(" "),
+          _c("td", { staticClass: "text-right" }, [
+            _c(
+              "form",
+              { attrs: { action: _vm.cabinLink(cabin), method: "POST" } },
+              [
+                _c("input", {
+                  attrs: { type: "hidden", name: "_token" },
+                  domProps: { value: _vm.csrf }
+                }),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "hidden", name: "_method", value: "DELETE" }
+                }),
+                _vm._v(" "),
+                _vm._m(1, true)
+              ]
+            )
           ])
         ])
       }),
@@ -48578,9 +48683,23 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Name")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Sleeps")])
+        _c("th", { staticClass: "text-right", attrs: { scope: "col" } }, [
+          _vm._v("Sleeps")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "text-right", attrs: { scope: "col" } })
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-link btn-sm", attrs: { type: "submit" } },
+      [_c("i", { staticClass: "fas fa-trash" })]
+    )
   }
 ]
 render._withStripped = true

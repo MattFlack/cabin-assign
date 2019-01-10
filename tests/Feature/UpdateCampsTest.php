@@ -11,6 +11,7 @@ class UpdateCampsTest extends TestCase
 
     protected $user;
     protected $camp;
+    protected $cabin;
     protected $camper;
     protected $campersFriend;
     protected $friendship;
@@ -21,6 +22,7 @@ class UpdateCampsTest extends TestCase
 
         $this->user = create('App\User');
         $this->camp = create('App\Camp', ['user_id' => $this->user->id]);
+        $this->cabin = create('App\Cabin', ['camp_id' => $this->camp->id]);
         $this->camper = create('App\Camper', ['camp_id' => $this->camp->id]);
 
         $this->campersFriend = create('App\Camper', ['camp_id' => $this->camp->id]);
@@ -76,6 +78,7 @@ class UpdateCampsTest extends TestCase
 
         $this->assertDatabaseMissing('camps', $this->camp->toArray());
         $this->assertDatabaseMissing('campers', $this->camper->toArray());
+        $this->assertDatabaseMissing('cabins', $this->cabin->toArray());
         $this->assertDatabaseMissing('friendships', $this->friendship->toArray());
     }
 
@@ -141,9 +144,36 @@ class UpdateCampsTest extends TestCase
         $this->json('DELETE', $this->camper->path())
             ->assertStatus(403);
 
-        $this->assertDatabaseHas('campers', [
-            'name' => $this->camper->name
-        ]);
+        $this->assertDatabaseHas('campers', ['name' => $this->camper->name]);
+    }
+
+    /** @test */
+    public function authorised_users_can_delete_cabins()
+    {
+        $this->signIn($this->user);
+
+        $this->json('DELETE', $this->cabin->path())
+            ->assertStatus(204);
+
+        $this->assertDatabaseMissing('cabins', [ 'name' => $this->cabin->name ]);
+    }
+
+    /** @test */
+    public function unauthorised_users_may_not_delete_cabins()
+    {
+        $this->withExceptionHandling();
+
+        // Not signed in
+        $this->json('DELETE', $this->cabin->path())
+            ->assertStatus(403);
+
+        // Not the owner
+        $this->signIn();
+
+        $this->json('DELETE', $this->cabin->path())
+            ->assertStatus(403);
+
+        $this->assertDatabaseHas('cabins', ['name' => $this->cabin->name ]);
     }
 
 }

@@ -106,6 +106,7 @@ class FriendshipsController extends Controller
             return response([], 204);
         }
 
-        return redirect($camper->path());
+        return redirect($camper->path())
+            ->with('flash', 'Friend has been removed!');
     }
 }

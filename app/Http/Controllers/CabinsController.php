@@ -93,8 +93,17 @@ class CabinsController extends Controller
      * @param  \App\Cabin  $cabin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cabin $cabin)
+    public function destroy(Camp $camp, Cabin $cabin)
     {
-        //
+        $this->authorize('update', $camp);
+
+        $cabin->delete();
+
+        if(request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect($camp->path())
+            ->with('flash', 'Cabin has been removed!');
     }
 }
