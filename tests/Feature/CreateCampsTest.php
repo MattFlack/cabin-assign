@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateCampsTest extends TestCase
 {
@@ -38,9 +36,6 @@ class CreateCampsTest extends TestCase
         $this->post('/camps', $camp->toArray());
 
         $this->assertDatabaseHas('camps', $camp->toArray());
-
-        $this->get($camp->path())
-            ->assertSee(e($camp->name));
     }
 
     /** @test */
@@ -63,8 +58,8 @@ class CreateCampsTest extends TestCase
 
         $this->assertDatabaseHas('campers', $camper->toArray());
 
-        $this->get($camp->path(). '/campers')
-            ->assertJsonFragment([ 'name' => $camper->name]);
+        $this->get($camp->path(). '/campers/create')
+            ->assertSee(e($camper->name));
     }
 
     /** @test */
@@ -112,30 +107,30 @@ class CreateCampsTest extends TestCase
     }
 
     /** @test */
-    public function authorised_users_can_visit_the_cabins_view()
+    public function authorised_users_can_visit_the_create_cabins_view()
     {
         $this->signIn();
         $camp = create('App\Camp', ['user_id' => auth()->id()]);
 
-        $this->get($camp->path() . '/cabins')
+        $this->get($camp->path() . '/cabins/create')
             ->assertSee('Add Cabins');
     }
 
     /** @test */
-    public function unauthorised_users_may_not_visit_the_cabins_view()
+    public function unauthorised_users_may_not_visit_the_create_cabins_view()
     {
         $this->withExceptionHandling();
 
         $camp = create('App\Camp');
 
         // Not signed in
-        $this->get($camp->path() . '/cabins')
+        $this->get($camp->path() . '/cabins/create')
             ->assertStatus(403);
 
         // Not the camp owner
         $this->signIn();
 
-        $this->get($camp->path() . '/cabins')
+        $this->get($camp->path() . '/cabins/create')
             ->assertStatus(403);
     }
 

@@ -15,9 +15,7 @@ class CabinsController extends Controller
      */
     public function index(Camp $camp)
     {
-        $this->authorize('update', $camp);
-
-        return view('cabins.index', compact('camp'));
+        //
     }
 
     /**
@@ -27,7 +25,9 @@ class CabinsController extends Controller
      */
     public function create(Camp $camp)
     {
-        //
+        $this->authorize('update', $camp);
+
+        return view('cabins.create', compact('camp'));
     }
 
     /**
@@ -49,8 +49,8 @@ class CabinsController extends Controller
 
         Cabin::create($data);
 
-        return redirect($camp->path() . '/cabins')
-            ->with(['flash', 'Cabin added!']);
+        return redirect($camp->path() . '/cabins/create')
+            ->with('flash', 'New cabin added!');
     }
 
     /**

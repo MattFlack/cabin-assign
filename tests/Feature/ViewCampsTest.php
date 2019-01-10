@@ -78,22 +78,33 @@ class ViewCampsTest extends TestCase
 
         $camper = create('App\Camper', ['camp_id' => $this->camp->id]);
 
-        $this->get('/camps/' . $this->camp->id .'/campers')
-            ->assertJsonFragment(['name' => $camper->name]);
+        $this->get($this->camp->path())
+            ->assertSee($camper->name);
     }
 
     /** @test */
-    public function an_authenticated_user_can_request_all_campers_for_a_given_camp()
+    public function authorised_users_can_see_cabins_that_are_associated_with_their_camp()
     {
         $this->signIn($this->user);
 
-        $camper = create('App\Camper', ['camp_id' => $this->camp->id]);
+        $cabin = create('App\Cabin', ['camp_id' => $this->camp->id]);
 
-        $uri = $this->camp->path() . '/campers';
-        $response = $this->getJson($uri)->json();
-
-        $this->assertCount(1, $response['data']);
-        $this->assertEquals($camper->name, $response['data'][0]['name']);
+        $this->get($this->camp->path())
+            ->assertSee($cabin->name);
     }
+
+//    /** @test */
+//    public function an_authenticated_user_can_request_all_campers_for_a_given_camp()
+//    {
+//        $this->signIn($this->user);
+//
+//        $camper = create('App\Camper', ['camp_id' => $this->camp->id]);
+//
+//        $uri = $this->camp->path() . '/campers';
+//        $response = $this->getJson($uri)->json();
+//
+//        $this->assertCount(1, $response['data']);
+//        $this->assertEquals($camper->name, $response['data'][0]['name']);
+//    }
 
 }

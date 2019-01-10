@@ -22,9 +22,9 @@ class CampersController extends Controller
      */
     public function index(Camp $camp)
     {
-        $this->authorize('update', $camp);
-
-        return response($camp->campers()->paginate(10), Response::HTTP_OK);
+//        $this->authorize('update', $camp);
+//
+//        return response($camp->campers()->paginate(10), Response::HTTP_OK);
     }
 
     /**
@@ -34,7 +34,11 @@ class CampersController extends Controller
      */
     public function create(Camp $camp)
     {
-        //
+        $this->authorize('update', $camp);
+
+        $camp['campers_count'] = $camp->campers->count();
+
+        return view('campers.create', compact('camp'));
     }
 
     // TODO: Move this to a proper API route/controller
@@ -54,9 +58,10 @@ class CampersController extends Controller
 
         $data['camp_id'] = $camp->id;
 
-        $camper = Camper::create($data);
+        Camper::create($data);
 
-        return $camper;
+        return redirect($camp->path() . '/campers/create')
+            ->with('flash', 'New camper added!');
     }
 
     /**

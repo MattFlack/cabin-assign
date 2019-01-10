@@ -2,11 +2,34 @@
 
 @section('content')
 
-    <div class="container mt-3">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
 
-                <a href="{{ $camper->camp->path() }}">Back to Camp</a>
+                <breadcrumbs>
+                    <crumb link="/camps">Camps</crumb>
+                    <crumb link="{{ $camper->camp->path() }}">{{ $camper->camp->name }}</crumb>
+                    <crumb is-current-page="true">{{ $camper->name }}</crumb>
+                </breadcrumbs>
+
+                <h2 class="mt-4 mb-3">{{ $camper->name }}</h2>
+
+                @include('shared.validation_errors')
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Add Friends</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <add-friend-form
+                                :friends="{{ $camper->friends }}"
+                                end-point="{{ $camper->path() }}"
+                                :camper="{{ $camper }}"
+                                :campers="{{ $camper->camp->campers }}">
+                        </add-friend-form>
+                    </div>
+                </div>
 
                 <div class="card mb-5 mt-3">
 
@@ -15,12 +38,12 @@
 
                             {{-- Left Header --}}
                             <div class="flex-grow-1 bd-highlight">
-                                <h2>{{ $camper->name }}</h2>
+                                <h3>Friends</h3>
                             </div>
 
                             {{-- Right Header --}}
                             <div class="bd-highlight">
-                                <span class="badge badge-secondary">Friends: {{ $camper->friends->count() }}</span>
+                                <span title="Total Friends" class="badge badge-secondary">Total: {{ $camper->friends_count }}</span>
                             </div>
                         </div>
                     </div>
@@ -51,9 +74,7 @@
                     </ul>
                 </div>
 
-                @include('shared.validation_errors')
-                <h2>Add Friends</h2>
-                <add-friend-form :friends="{{ $camper->friends }}" end-point="{{ $camper->path() }}" :camper="{{ $camper }}" :campers="{{ $camper->camp->campers }}"></add-friend-form>
+
 
             </div>
         </div>

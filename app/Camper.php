@@ -7,6 +7,8 @@ class Camper extends Model
 {
     protected $guarded = [];
 
+    protected $withCount = ['friends'];
+
     public function camp()
     {
         return $this->belongsTo(Camp::class);

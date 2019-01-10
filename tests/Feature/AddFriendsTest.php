@@ -29,7 +29,6 @@ class AddFriendsTest extends TestCase
             'camper_id' => $this->camper->id,
             'friend_id' => $this->anotherCamper->id
         ]);
-
     }
 
     /** @test */
@@ -79,7 +78,7 @@ class AddFriendsTest extends TestCase
 
         $this->get($this->anotherCamper->path())
             ->assertSee('New friend added')
-            ->assertSee("Friends: 1");
+            ->assertSee("Total: 1");
     }
 
     /** @test */

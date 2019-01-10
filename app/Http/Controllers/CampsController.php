@@ -50,7 +50,7 @@ class CampsController extends Controller
 
         $camp = Camp::create($data);
 
-        return redirect($camp->path() . '/cabins')
+        return redirect($camp->path())
             ->with('flash', 'New camp added!');
     }
 
