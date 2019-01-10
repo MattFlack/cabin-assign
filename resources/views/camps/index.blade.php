@@ -50,8 +50,16 @@
                     @endforeach
                     </ul>
 
+                    {{-- Pagination Links --}}
+                    @if($camps->total() > $camps->perPage())
+                    <div class="card-footer d-flex justify-content-center pb-0 pt-3">
+                        {{ $camps->links() }}
+                    </div>
+                    @endif
 
                 </div>
+
+
             </div>
         </div>
     </div>

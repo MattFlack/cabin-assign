@@ -19,7 +19,7 @@ class CampsController extends Controller
      */
     public function index()
     {
-        $camps = Camp::where('user_id', auth()->id())->get();
+        $camps = Camp::where('user_id', auth()->id())->paginate(15);
 
         return view('camps.index', compact('camps'));
     }
