@@ -49,8 +49,47 @@ class CampTest extends TestCase
     /** @test */
     public function a_camp_can_have_cabins()
     {
-        $cabin = create('App\Cabin', ['camp_id' => $this->camp->id]);
+        create('App\Cabin', ['camp_id' => $this->camp->id]);
 
         $this->assertInstanceOf('App\Cabin', $this->camp->cabins[0]);
     }
+
+    /** @test */
+    public function a_camp_may_have_unallocated_campers()
+    {
+        $cabin = create('App\Cabin', ['camp_id' => $this->camp->id]);
+
+        $this->assertInstanceOf('App\Camper', $this->camp->unallocatedCampers[0]);
+        $this->assertEquals($this->camper->name, $this->camp->unallocatedCampers[0]->name);
+
+        $cabin->addCamper($this->camper);
+
+        $this->assertEmpty($this->camp->fresh()->unallocatedCampers);
+    }
+
+    /** @test */
+    public function a_camp_can_deallocate_all_campers_cabins()
+    {
+        $cabin = create('App\Cabin', ['camp_id' => $this->camp->id]);
+        $camper = create('App\Camper', ['camp_id' => $this->camp->id]);
+        $camper2 = create('App\Camper', ['camp_id' => $this->camp->id]);
+
+        $cabin->addCamper($this->camper);
+        $cabin->addCamper($camper);
+        $cabin->addCamper($camper2);
+
+        $this->assertEquals(0, $this->camp->unallocatedCampers->count());
+
+        $this->camp->deallocateCabins();
+
+        $this->assertEquals(3, $this->camp->fresh()->unallocatedCampers->count());
+    }
+
+
+
+//    /** @test */
+//    public function a_camp_can_allocate_cabins_to_campers()
+//    {
+//
+//    }
 }

@@ -8,6 +8,6 @@ $factory->define(App\Cabin::class, function (Faker $faker) {
             return factory('App\Camp')->create()->id;
         },
         'name' => $faker->name,
-        'capacity' => 10
+        'number_of_beds' => 10
     ];
 });

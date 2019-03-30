@@ -27,7 +27,7 @@ class ViewCampsTest extends TestCase
         $this->signIn($this->user);
 
         $this->get('/camps')
-            ->assertSee($this->camp->name);
+            ->assertSee(e($this->camp->name));
     }
 
     /** @test */
@@ -52,7 +52,7 @@ class ViewCampsTest extends TestCase
         $this->signIn($this->user);
 
         $this->get('/camps/' . $this->camp->id)
-            ->assertSee($this->camp->name);
+            ->assertSee(e($this->camp->name));
     }
 
     /** @test */
@@ -79,7 +79,7 @@ class ViewCampsTest extends TestCase
         $camper = create('App\Camper', ['camp_id' => $this->camp->id]);
 
         $this->get($this->camp->path())
-            ->assertSee($camper->name);
+            ->assertSee(e($camper->name));
     }
 
     /** @test */

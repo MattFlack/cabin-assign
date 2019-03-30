@@ -26,6 +26,7 @@ Vue.component('campers', require('./components/Campers.vue'));
 Vue.component('cabins', require('./components/Cabins.vue'));
 // Vue.component('new-camper', require('./components/NewCamper.vue'));
 Vue.component('add-friend-form', require('./components/AddFriendForm.vue'));
+Vue.component('assign-cabins', require('./components/AssignCabins.vue'));
 
 Vue.component('breadcrumbs', require('./components/Breadcrumbs.vue'));
 Vue.component('crumb', require('./components/Crumb.vue'));

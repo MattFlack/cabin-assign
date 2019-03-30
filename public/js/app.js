@@ -14028,7 +14028,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(13);
-module.exports = __webpack_require__(71);
+module.exports = __webpack_require__(74);
 
 
 /***/ }),
@@ -14062,13 +14062,14 @@ Vue.component('campers', __webpack_require__(48));
 Vue.component('cabins', __webpack_require__(51));
 // Vue.component('new-camper', require('./components/NewCamper.vue'));
 Vue.component('add-friend-form', __webpack_require__(54));
+Vue.component('assign-cabins', __webpack_require__(57));
 
-Vue.component('breadcrumbs', __webpack_require__(57));
-Vue.component('crumb', __webpack_require__(59));
+Vue.component('breadcrumbs', __webpack_require__(60));
+Vue.component('crumb', __webpack_require__(62));
 
-Vue.component('tabs', __webpack_require__(62));
-Vue.component('tab', __webpack_require__(65));
-Vue.component('tab-dropdown-item', __webpack_require__(68));
+Vue.component('tabs', __webpack_require__(65));
+Vue.component('tab', __webpack_require__(68));
+Vue.component('tab-dropdown-item', __webpack_require__(71));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -48647,7 +48648,9 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("td", { staticClass: "text-right" }, [
-            _vm._v("\n            " + _vm._s(cabin.capacity) + "\n        ")
+            _vm._v(
+              "\n            " + _vm._s(cabin.number_of_beds) + "\n        "
+            )
           ]),
           _vm._v(" "),
           _c("td", { staticClass: "text-right" }, [
@@ -48939,9 +48942,394 @@ if (false) {
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
+var __vue_script__ = __webpack_require__(58)
+/* template */
+var __vue_template__ = __webpack_require__(59)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/AssignCabins.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-188ec238", Component.options)
+  } else {
+    hotAPI.reload("data-v-188ec238", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['campId', 'camp'],
+
+    data: function data() {
+        return {
+            unallocatedCampers: [],
+            cabins: [],
+            friendsOfSelected: [],
+            selectedCamper: false
+        };
+    },
+    created: function created() {
+        this.unallocatedCampers = this.camp.unallocated_campers;
+        this.cabins = this.camp.cabins;
+    },
+
+
+    methods: {
+        assignCabins: function assignCabins() {
+            var _this = this;
+
+            axios.post('/camps/' + this.campId + '/allocate-beds').catch(function (error) {
+                // TODO: Update flash to receive type of flash (Error should be red).
+                flash(error.response.data.message);
+            }).then(function (_ref) {
+                var data = _ref.data;
+
+                flash('Cabins allocated!');
+                _this.cabins = data;
+                // console.log(data);
+            });
+        },
+        resetCabins: function resetCabins() {
+            axios.delete('/camps/' + this.camp.id + '/allocate-beds');
+        },
+        highLightFriends: function highLightFriends(camper) {
+            this.selectedCamper = camper.id;
+            this.friendsOfSelected = camper.friends.map(function (friend) {
+                return friend.friend_id;
+            });
+        },
+        hasFriendInCabin: function hasFriendInCabin(camper, cabinCampers) {
+            if (camper.friends_count === 0) {
+                return true;
+            }
+
+            var cabinCamperIds = cabinCampers.map(function (cabinCamper) {
+                return cabinCamper.id;
+            });
+            var friendIdsOfCamper = camper.friends.map(function (friend) {
+                return friend.friend_id;
+            });
+
+            for (var i = 0; i < friendIdsOfCamper.length; i++) {
+                if (cabinCamperIds.includes(friendIdsOfCamper[i])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+});
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "mb-4 mt-4 text-center col-md-4 offset-4" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", on: { click: _vm.assignCabins } },
+        [_vm._v("Assign Cabins")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", on: { click: _vm.resetCabins } },
+        [_vm._v("Reset")]
+      )
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.unallocatedCampers.length > 0,
+            expression: "unallocatedCampers.length > 0"
+          }
+        ],
+        staticClass: "card mb-4"
+      },
+      [
+        _c("div", { staticClass: "card-header" }, [_vm._v("Unallocated")]),
+        _vm._v(" "),
+        _c(
+          "ul",
+          { staticClass: "list-group list-group-flush" },
+          _vm._l(_vm.unallocatedCampers, function(camper) {
+            return _c(
+              "li",
+              {
+                key: camper.id,
+                staticClass: "list-group-item",
+                class: [
+                  _vm.friendsOfSelected.includes(camper.id)
+                    ? "list-group-item-primary"
+                    : "",
+                  camper.id === _vm.selectedCamper ? "active" : ""
+                ],
+                on: {
+                  click: function($event) {
+                    _vm.highLightFriends(camper)
+                  }
+                }
+              },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(camper.name) +
+                    "\n\n            "
+                )
+              ]
+            )
+          }),
+          0
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "row" },
+      _vm._l(_vm.cabins, function(cabin) {
+        return _c("div", { staticClass: "col-sm-4" }, [
+          _c("div", { staticClass: "card mb-3" }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "card-header d-flex bd-highlight align-items-center"
+              },
+              [
+                _c("div", { staticClass: "flex-grow-1 bd-highlight" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(cabin.name) +
+                      "\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "bd-highlight" },
+                  [
+                    cabin.campers
+                      ? [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(cabin.campers.length) +
+                              "/" +
+                              _vm._s(cabin.number_of_beds) +
+                              "\n                        "
+                          )
+                        ]
+                      : _vm._e()
+                  ],
+                  2
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "ul",
+              { staticClass: "list-group list-group-flush" },
+              _vm._l(cabin.campers, function(camper) {
+                return _c(
+                  "li",
+                  {
+                    key: camper.id,
+                    staticClass: "list-group-item",
+                    class: [
+                      camper.id === _vm.selectedCamper ? "active" : "",
+                      _vm.friendsOfSelected.includes(camper.id)
+                        ? "list-group-item-primary"
+                        : ""
+                    ],
+                    on: {
+                      click: function($event) {
+                        _vm.highLightFriends(camper)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "d-flex bd-highlight align-items-center" },
+                      [
+                        _c("div", { staticClass: "flex-grow-1 bd-highlight" }, [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(camper.name) +
+                              "\n                            "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: !_vm.hasFriendInCabin(
+                                  camper,
+                                  cabin.campers
+                                ),
+                                expression:
+                                  "!hasFriendInCabin(camper, cabin.campers)"
+                              }
+                            ],
+                            staticClass: "bd-highlight"
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fas fa-exclamation-circle",
+                              attrs: {
+                                title: "This camper is not with any friends"
+                              }
+                            })
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              }),
+              0
+            )
+          ])
+        ])
+      }),
+      0
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-188ec238", module.exports)
+  }
+}
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
 var __vue_script__ = null
 /* template */
-var __vue_template__ = __webpack_require__(58)
+var __vue_template__ = __webpack_require__(61)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -48980,7 +49368,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49002,15 +49390,15 @@ if (false) {
 }
 
 /***/ }),
-/* 59 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(60)
+var __vue_script__ = __webpack_require__(63)
 /* template */
-var __vue_template__ = __webpack_require__(61)
+var __vue_template__ = __webpack_require__(64)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49049,7 +49437,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49069,7 +49457,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49101,15 +49489,15 @@ if (false) {
 }
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(63)
+var __vue_script__ = __webpack_require__(66)
 /* template */
-var __vue_template__ = __webpack_require__(64)
+var __vue_template__ = __webpack_require__(67)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49148,11 +49536,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -49213,34 +49603,71 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "ul",
-      { staticClass: "nav nav-tabs" },
-      _vm._l(_vm.tabs, function(tab) {
-        return _c(
-          "li",
-          { class: [{ dropdown: tab.isDropdown }, "nav-item"] },
-          [
-            tab.isDropdown
-              ? [
-                  _c(
+  return _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card-header" }, [
+      _c(
+        "ul",
+        { staticClass: "nav nav-tabs card-header-tabs" },
+        _vm._l(_vm.tabs, function(tab) {
+          return _c(
+            "li",
+            { class: [{ dropdown: tab.isDropdown }, "nav-item"] },
+            [
+              tab.isDropdown
+                ? [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "nav-link dropdown-toggle",
+                        attrs: {
+                          "data-toggle": "dropdown",
+                          href: "#",
+                          role: "button",
+                          "aria-haspopup": "true",
+                          "aria-expanded": "false"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(tab.name) +
+                            "\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "dropdown-menu" },
+                      _vm._l(tab.dropdownItems, function(dropdownItem) {
+                        return _c(
+                          "a",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: { href: dropdownItem.dropdownLink }
+                          },
+                          [_vm._v(_vm._s(dropdownItem.name))]
+                        )
+                      }),
+                      0
+                    )
+                  ]
+                : _c(
                     "a",
                     {
-                      staticClass: "nav-link dropdown-toggle",
-                      attrs: {
-                        "data-toggle": "dropdown",
-                        href: "#",
-                        role: "button",
-                        "aria-haspopup": "true",
-                        "aria-expanded": "false"
+                      class: [{ active: tab.isActive }, "nav-link"],
+                      attrs: { href: tab.link },
+                      on: {
+                        click: function($event) {
+                          _vm.navigate(tab)
+                        }
                       }
                     },
                     [
@@ -49250,49 +49677,16 @@ var render = function() {
                           "\n                "
                       )
                     ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "dropdown-menu" },
-                    _vm._l(tab.dropdownItems, function(dropdownItem) {
-                      return _c(
-                        "a",
-                        {
-                          staticClass: "dropdown-item",
-                          attrs: { href: dropdownItem.dropdownLink }
-                        },
-                        [_vm._v(_vm._s(dropdownItem.name))]
-                      )
-                    }),
-                    0
                   )
-                ]
-              : _c(
-                  "a",
-                  {
-                    class: [{ active: tab.isActive }, "nav-link"],
-                    attrs: { href: tab.link },
-                    on: {
-                      click: function($event) {
-                        _vm.navigate(tab)
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                " + _vm._s(tab.name) + "\n            "
-                    )
-                  ]
-                )
-          ],
-          2
-        )
-      }),
-      0
-    ),
+            ],
+            2
+          )
+        }),
+        0
+      )
+    ]),
     _vm._v(" "),
-    _c("div", { staticClass: "tab-contents" }, [_vm._t("default")], 2)
+    _c("div", { staticClass: "card-body tab-contents" }, [_vm._t("default")], 2)
   ])
 }
 var staticRenderFns = []
@@ -49306,15 +49700,15 @@ if (false) {
 }
 
 /***/ }),
-/* 65 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(66)
+var __vue_script__ = __webpack_require__(69)
 /* template */
-var __vue_template__ = __webpack_require__(67)
+var __vue_template__ = __webpack_require__(70)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49353,7 +49747,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 66 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49393,7 +49787,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49428,15 +49822,15 @@ if (false) {
 }
 
 /***/ }),
-/* 68 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(69)
+var __vue_script__ = __webpack_require__(72)
 /* template */
-var __vue_template__ = __webpack_require__(70)
+var __vue_template__ = __webpack_require__(73)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49475,7 +49869,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 69 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49492,7 +49886,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 70 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49512,7 +49906,7 @@ if (false) {
 }
 
 /***/ }),
-/* 71 */
+/* 74 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

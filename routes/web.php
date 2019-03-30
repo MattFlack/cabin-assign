@@ -38,3 +38,6 @@ Route::delete('/camps/{camp}/campers/{camper}/friendships/{friendship}', 'Friend
 Route::post('/camps/{camp}/cabins/', 'CabinsController@store');
 Route::get('/camps/{camp}/cabins/create', 'CabinsController@create');
 Route::delete('/camps/{camp}/cabins/{cabin}', 'CabinsController@destroy');
+
+Route::post('/camps/{camp}/allocate-beds', 'AllocatedBedsController@store');
+Route::delete('/camps/{camp}/allocate-beds', 'AllocatedBedsController@destroy');

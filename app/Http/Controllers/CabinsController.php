@@ -42,7 +42,7 @@ class CabinsController extends Controller
 
         $data = $request->validate([
            'name' => ['required'],
-           'capacity' => ['required']
+           'number_of_beds' => ['required']
         ]);
 
         $data['camp_id'] = $camp->id;

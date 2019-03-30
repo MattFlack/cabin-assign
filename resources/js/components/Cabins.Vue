@@ -18,7 +18,7 @@
 
             <!-- Number of beds -->
             <td class="text-right">
-                {{ cabin.capacity }}
+                {{ cabin.number_of_beds }}
             </td>
 
             <!-- Delete Button -->

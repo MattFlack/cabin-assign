@@ -43,4 +43,35 @@ class CamperTest extends TestCase
         $this->assertEquals($friend->friend_id, $this->camper->friends[0]->friend_id);
         $this->assertEquals($friend->camper_id, $this->camper->friends[0]->camper_id);
     }
+
+    /** @test */
+    public function a_camper_can_have_a_cabin()
+    {
+        $cabin = create('App\Cabin', ['camp_id' => $this->camp->id]);
+
+        $cabin->addCamper($this->camper);
+
+        $this->assertInstanceOf('App\Cabin', $this->camper->cabin);
+    }
+
+    /** @test */
+    public function a_camper_knows_if_it_has_a_cabin()
+    {
+        $this->assertFalse($this->camper->hasCabin());
+
+        $cabin = create('App\Cabin', ['camp_id' => $this->camp->id]);
+        $camperWithCabin = create('App\Camper', ['cabin_id' => $cabin->id]);
+
+        $this->assertTrue($camperWithCabin->hasCabin());
+    }
+
+    /** @test */
+    public function a_camper_knows_if_it_has_at_least_one_friend()
+    {
+        $this->assertFalse($this->camper->hasFriend());
+
+        create('App\Friendship', ['camper_id' => $this->camper->id]);
+
+        $this->assertTrue($this->camper->fresh()->hasFriend());
+    }
 }

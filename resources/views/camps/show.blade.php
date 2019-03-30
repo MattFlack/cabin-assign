@@ -41,6 +41,13 @@
                                 @endif
                             </tab>
 
+                            <tab name="Assign Cabins">
+                                <assign-cabins
+                                    :camp="{{ $camp }}"
+                                    :camp-id="{{ $camp->id }}">
+                                </assign-cabins>
+                            </tab>
+
                             <tab name="Add New" :is-dropdown="true">
                                 <tab-dropdown-item name="Camper" dropdown-link="{{ $camp->path() . '/campers/create' }}"></tab-dropdown-item>
                                 <tab-dropdown-item name="Cabin" dropdown-link="{{ $camp->path(). '/cabins/create' }}"></tab-dropdown-item>

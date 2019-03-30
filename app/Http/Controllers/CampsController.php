@@ -64,6 +64,8 @@ class CampsController extends Controller
     {
         $this->authorize('update', $camp);
 
+        $camp = Camp::where('id', $camp->id)->with('unallocatedCampers.friends', 'cabins.campers.friends')->first();
+
         return view('camps.show', compact('camp'));
     }
 

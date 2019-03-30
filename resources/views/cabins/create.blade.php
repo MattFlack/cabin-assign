@@ -29,8 +29,8 @@
 
                             <!--  Cabin Capacity Input -->
                             <div class="form-group">
-                                <label for="capacity">Capacity</label>
-                                <input class="form-control" name="capacity" type="number" id="capacity" required>
+                                <label for="number_of_beds">Number of Beds</label>
+                                <input class="form-control" name="number_of_beds" type="number" id="number_of_beds" required>
                             </div>
 
                             <input class="btn btn-primary" type="submit" value="Submit">
@@ -62,7 +62,7 @@
 
                                     <!-- Left Content -->
                                     <div class="flex-grow-1 bd-highlight">
-                                        {{ $cabin->name }} sleeps {{ $cabin->capacity }}
+                                        {{ $cabin->name }} sleeps {{ $cabin->number_of_beds }}
                                     </div>
 
                                     <!-- Right Content -->

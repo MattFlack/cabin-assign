@@ -17,7 +17,7 @@ class CreateCabinsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('camp_id');
             $table->string('name');
-            $table->unsignedInteger('capacity');
+            $table->unsignedInteger('number_of_beds');
             $table->timestamps();
         });
     }
