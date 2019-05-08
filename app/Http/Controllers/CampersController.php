@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Camper;
 use App\Camp;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class CampersController extends Controller
 {
@@ -30,7 +29,9 @@ class CampersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Camp $camp
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Camp $camp)
     {

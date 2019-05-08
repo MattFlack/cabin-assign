@@ -6,7 +6,7 @@ use App\Friendship;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-class AddFriendsTest extends TestCase
+class ManageCampersTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -32,7 +32,35 @@ class AddFriendsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_visit_the_add_friend_view()
+    public function guests_cannot_manage_campers()
+    {
+        $this->withExceptionHandling();
+
+        $this->get($this->camper->path())->assertRedirect('/login');
+        $this->post($this->camp->path().'/campers', [])->assertRedirect('/login');
+        $this->json('DELETE', $this->camper->path())->assertStatus(401);
+
+        // Campers Friends
+        $this->post($this->camper->path(), [])->assertRedirect('/login');
+        $this->json('DELETE', $this->friendship->path())->assertStatus(401);
+    }
+
+
+    /** @test */
+    public function a_user_can_add_a_camper_to_one_of_their_camps()
+    {
+        $this->signIn($this->user);
+
+        $this->post($this->camp->path().'/campers', $this->camper->toArray());
+
+        $this->assertDatabaseHas('campers', $this->camper->toArray());
+
+        $this->get($this->camp->path(). '/campers/create')
+            ->assertSee(e($this->camper->name));
+    }
+
+    /** @test */
+    public function a_user_can_view_one_of_their_campers()
     {
         $this->signIn($this->user);
 
@@ -42,16 +70,7 @@ class AddFriendsTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_users_may_not_visit_the_add_friend_view()
-    {
-        $this->withExceptionHandling();
-
-        $this->get($this->camper->path())
-            ->assertRedirect('/login');
-    }
-
-    /** @test */
-    public function an_authenticated_user_may_not_visit_the_add_friend_view_page_for_a_camp_that_do_not_own()
+    public function a_user_may_not_view_a_camper_that_is_not_theirs()
     {
         $this->withExceptionHandling();
 
@@ -62,7 +81,47 @@ class AddFriendsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_specify_a_friend_for_a_given_camper()
+    public function a_user_can_delete_their_camper()
+    {
+        $this->signIn($this->user);
+
+        $this->json('DELETE', $this->camper->path())
+            ->assertStatus(204);
+
+        $this->assertDatabaseMissing('campers', [ 'name' => $this->camper->name ]);
+        $this->assertDatabaseMissing('friendships', $this->friendship->toArray());
+    }
+
+    /** @test */
+    public function users_may_not_delete_campers_they_dont_own()
+    {
+        $this->withExceptionHandling();
+
+        $this->signIn();
+
+        $this->json('DELETE', $this->camper->path())
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function deleting_a_camper_also_deletes_all_friendships_camper_is_involved_in()
+    {
+        $this->signIn($this->user);
+
+        $oppositeFriendship = create('App\Friendship', [
+            'camp_id' => $this->camp->id,
+            'camper_id' => $this->anotherCamper->id,
+            'friend_id' => $this->camper->id,
+        ]);
+
+        $this->json('DELETE', $this->camper->path());
+
+        $this->assertDatabaseMissing('friendships', $this->friendship->toArray());
+        $this->assertDatabaseMissing('friendships', $oppositeFriendship->toArray());
+    }
+
+    /** @test */
+    public function a_user_can_specify_a_friend_for_one_of_their_campers()
     {
         $this->signIn($this->user);
 
@@ -82,15 +141,6 @@ class AddFriendsTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticated_users_may_not_specify_a_friendship()
-    {
-        $this->withExceptionHandling();
-
-        $this->post($this->camper->path(), [])
-            ->assertRedirect('/login');
-    }
-
-    /** @test */
     public function duplicate_friends_may_not_be_added()
     {
         $this->expectException('Illuminate\Validation\ValidationException');
@@ -107,7 +157,7 @@ class AddFriendsTest extends TestCase
     }
 
     /** @test */
-    public function authorised_users_can_delete_friendships()
+    public function a_user_can_delete_a_friendship_of_one_of_their_campers()
     {
         $this->signIn($this->user);
 
@@ -118,15 +168,10 @@ class AddFriendsTest extends TestCase
     }
 
     /** @test */
-    public function unauthorised_users_may_not_delete_friendships()
+    public function users_may_not_delete_friendships_of_campers_they_do_not_own()
     {
         $this->withExceptionHandling();
 
-        // Not signed in
-        $this->json('DELETE', $this->friendship->path())
-            ->assertStatus(401);
-
-        // Not the owner
         $this->signIn();
 
         $this->json('DELETE', $this->friendship->path())

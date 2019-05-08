@@ -8,20 +8,18 @@ use Illuminate\Http\Request;
 
 class CabinsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Camp $camp)
+
+    public function __construct()
     {
-        //
+        $this->middleware('auth');
     }
 
     /**
      * Show the form for creating a new resource.
      *
+     * @param Camp $camp
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Camp $camp)
     {
